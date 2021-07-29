@@ -6,13 +6,13 @@
 
 %term VAR |
     | IF | ELSE
-    | BOOL | END | FALSE | TRUE
+    | END | FALSE | TRUE
     | FN | FUN | HD
     | ISE | MATCH | NIL | WITH
     | PRINT | REC | THEN | TL
     | PLUS | MINUS | MULT | DIV | EQ
     | LPAR | RPAR | LCOL | RCOL | LKEY | RKEY
-    | TWOP
+    | TWOP | WOP
     | LESS | LEQ
     | AND | NOT | DIF
     | SEMIC | DOT
@@ -38,8 +38,8 @@ Prog : Expr (Expr)
 Expr : AtomExpr (AtomExpr)
     | Expr PLUS Expr (Prim("+", Expr1, Expr2))
     | Expr MINUS Expr (Prim("-", Expr1, Expr2))
-    | Expr MULT Expr (Prim("-", Expr1, Expr2))
-    | Expr DIV Expr (Prim("-", Expr1, Expr2))
+    | Expr MULT Expr (Prim("*", Expr1, Expr2))
+    | Expr DIV Expr (Prim("/", Expr1, Expr2))
     | Expr EQ Expr (Prim("=", Expr1, Expr2))
 
 AtomExpr : Const (Const)
