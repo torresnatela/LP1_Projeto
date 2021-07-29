@@ -21,8 +21,8 @@
 
 %noterm Prog of expr | Expr of expr | AtomExpr of expr | Const of expr |
 
-%right SEMIC
-%left EQ PLUX MINUS MULTI DIV
+%right SEMIC TWOP RPAR RCOL RKEY
+%left EQ PLUX MINUS MULTI DIV AND DIF LESS LEQ LPAR LCOL LKEY
 
 %eop EOF
 
