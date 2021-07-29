@@ -85,6 +85,7 @@ identifier=[a-zA-Z_][a-zA-Z_0-9]*;
 "{" => (LKEY(yypos, yypos));
 "}" => (RKEY(yypos, yypos));
 "," => (DOT(yypos, yypos));
+":" => (WOP(yypos, yypos)); 
 
 
 . => (error("\n *** Lexer error: character invalid ***\n"); raise
