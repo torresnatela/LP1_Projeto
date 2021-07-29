@@ -4,11 +4,19 @@
 
 %pos int
 
-%term VAR
+%term VAR |
+    | IF | ELSE
+    | BOOL | END | FALSE | TRUE
+    | FN | FUN | HD
+    | ISE | MATCH | NIL | WITH
+    | PRINT | REC | THEN | TL
     | PLUS | MINUS | MULT | DIV | EQ
-    | LPAR | RPAR
-    | SEMIC
-    | NAME of String | CINT of int
+    | LPAR | RPAR | LCOL | RCOL | LKEY | RKEY
+    | TWOP
+    | LESS | LEQ
+    | AND | NOT | DIF
+    | SEMIC | DOT
+    | NAME of String | INT of int | BOOL of Bool
     | EOF
 
 %noterm Prog of expr | Expr of expr | AtomExpr of expr | Const of expr |
