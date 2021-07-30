@@ -12,11 +12,11 @@
     | PRINT | REC | THEN | TL
     | PLUS | MINUS | MULT | DIV | EQ
     | LPAR | RPAR | LCOL | RCOL | LKEY | RKEY
-    | TWOP | WOP
+    | TWOP | FWOP
     | LESS | LEQ
     | AND | NOT | DIF
     | SEMIC | VIRG
-    | ARR | BAR | UNDER | DAR
+    | ARR | BAR | UNDER | DARR
     | NAME of string | INT | BOOL 
     | NAT of int
     | EOF
