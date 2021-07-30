@@ -36,10 +36,6 @@
         | Type of plcType
         | AtomicType of plcType
         | Types of plcType list
-        | NAT of int
-        | Name of string
-
-
 
 %right SEMIC TWOP RPAR RCOL RKEY
 %left EQ PLUS MINUS MULTI DIV AND DIF LESS LEQ LPAR LCOL LKEY
