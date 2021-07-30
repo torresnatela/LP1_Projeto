@@ -28,9 +28,9 @@ fun keyword (s, lpos, rpos) =
         "then" => THEN(lpos, rpos)
         "tl" => TL(lpos, rpos)
         "true" => TRUE(lpos, rpos)
-        "with" => WITH(lpos,rpos) 
+        "with" => WITH(lpos,rpos)
+        "_" => UNDER(lpos,rpos)
         | _   => NAME (s, lpos, rpos)
-
 
 val error = fn x => TextIO.output(TextIO.stdOut, x ^ "\n")
 val lineNumber = ref 0
@@ -64,8 +64,9 @@ identifier=[a-zA-Z_][a-zA-Z_0-9]*;
 
 \n => (lineNumber := !lineNumber + 1; lex());
 {whitespace}+ => (lex());
-{digit}+ => (CINT(strToInt(yytext), yypos, yypos));
+{digit}+ => (NAT(strToInt(yytext), yypos, yypos));
 {identifier} => (keyword(yytext, yypos, yypos));
+
 "+" => (PLUS(yypos, yypos));
 "-" => (MINUS(yypos, yypos));
 "*" => (MULT(yypos, yypos));
@@ -76,7 +77,7 @@ identifier=[a-zA-Z_][a-zA-Z_0-9]*;
 ")" => (RPAR(yypos, yypos));
 "[" => (LCOL(yypos, yypos));
 "]" => (RCOL(yypos, yypos));
-"::" => (TWOP(yypos, yypos)); 
+"::" => (FWOP(yypos, yypos)); 
 "<" => (LESS(yypos, yypos));
 "<=" => (LEQ(yypos, yypos));
 "&&" => (AND(yypos, yypos));
@@ -85,7 +86,7 @@ identifier=[a-zA-Z_][a-zA-Z_0-9]*;
 "{" => (LKEY(yypos, yypos));
 "}" => (RKEY(yypos, yypos));
 "," => (VIRG(yypos, yypos));
-":" => (WOP(yypos, yypos)); 
+":" => (TWOP(yypos, yypos)); 
 "->" => (ARR(yypos,yypos));
 "|" => (BAR(yypos,yypos));
 "_" => (UNDER(yypos,yypos));
