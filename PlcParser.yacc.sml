@@ -555,12 +555,12 @@ end
 |  ( 3, ( ( _, ( MlyValue.Prog Prog1, _, Prog1right)) :: _ :: ( _, ( 
 MlyValue.Expr Expr1, _, _)) :: _ :: ( _, ( MlyValue.Args Args1, _, _))
  :: ( _, ( MlyValue.NAME NAME1, _, _)) :: ( _, ( _, FUN1left, _)) :: 
-rest671)) => let val  result = MlyValue.Decl (fn _ => let val  NAME1 =
- NAME1 ()
+rest671)) => let val  result = MlyValue.Decl (fn _ => let val  (NAME
+ as NAME1) = NAME1 ()
  val  (Args as Args1) = Args1 ()
  val  (Expr as Expr1) = Expr1 ()
  val  (Prog as Prog1) = Prog1 ()
- in (Let(Name, makeAnon(Args, Expr), Prog))
+ in (Let(NAME, makeAnon(Args, Expr), Prog))
 end)
  in ( LrTable.NT 1, ( result, FUN1left, Prog1right), rest671)
 end
@@ -568,12 +568,12 @@ end
 MlyValue.Expr Expr1, _, _)) :: _ :: ( _, ( MlyValue.Type Type1, _, _))
  :: _ :: ( _, ( MlyValue.Args Args1, _, _)) :: ( _, ( MlyValue.NAME 
 NAME1, _, _)) :: _ :: ( _, ( _, FUN1left, _)) :: rest671)) => let val 
- result = MlyValue.Decl (fn _ => let val  NAME1 = NAME1 ()
+ result = MlyValue.Decl (fn _ => let val  (NAME as NAME1) = NAME1 ()
  val  (Args as Args1) = Args1 ()
  val  (Type as Type1) = Type1 ()
  val  (Expr as Expr1) = Expr1 ()
  val  (Prog as Prog1) = Prog1 ()
- in (makeFun(Name, Args, Type, Expr, Prog))
+ in (makeFun(NAME, Args, Type, Expr, Prog))
 end)
  in ( LrTable.NT 1, ( result, FUN1left, Prog1right), rest671)
 end
@@ -817,11 +817,11 @@ end)
 
 end
 |  ( 35, ( ( _, ( _, TRUE1left, TRUE1right)) :: rest671)) => let val  
-result = MlyValue.Const (fn _ => (ConB(TRUE)))
+result = MlyValue.Const (fn _ => (ConB(true)))
  in ( LrTable.NT 5, ( result, TRUE1left, TRUE1right), rest671)
 end
 |  ( 36, ( ( _, ( _, FALSE1left, FALSE1right)) :: rest671)) => let
- val  result = MlyValue.Const (fn _ => (ConB(FALSE)))
+ val  result = MlyValue.Const (fn _ => (ConB(false)))
  in ( LrTable.NT 5, ( result, FALSE1left, FALSE1right), rest671)
 end
 |  ( 37, ( ( _, ( MlyValue.NAT NAT1, NAT1left, NAT1right)) :: rest671)
