@@ -36,7 +36,7 @@
         | Type of plcType
         | AtomicType of plcType
         | Types of plcType list
-        | Nat of int
+        | NAT of int
         | Name of string
 
 
@@ -93,11 +93,9 @@ AtomExpr : Const (Const)
 AppExpr : AtomExpr AtomExpr (Call(AtomExpr1, AtomExpr2))
     | AppExpr AtomExpr (Call(AppExpr, AtomExpr))
 
-AppExpr : AtomExpr(AtomExpr) AtomExpr(AtomExpr) | AppExpr(AppExpr) AtomExpr(AtomExpr)
-
 Const : TRUE (ConB(TRUE))
 | FALSE (ConB(FALSE))
-| Nat (ConI(Nat))
+| NAT (ConI(NAT))
 | LPAR RPAR (List([]))
 | LPAR Type LKEY RKEY RCOL (ESeq(Type))
 
