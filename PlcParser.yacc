@@ -16,7 +16,8 @@
     | LESS | LEQ
     | AND | NOT | DIF
     | SEMIC | DOT
-    | NAME of String | INT of int | BOOL of Bool
+    | ARR | BAR | UNDER | DAR
+    | NAME of string | INT | BOOL 
     | EOF
 
 %noterm Prog of expr Decl | Decl | Expr of AtomExpr AppExpr MatchExpr | AtomExpr of Const | AppExpr of AtomExpr AppExpr 
@@ -24,6 +25,7 @@
 
 %right SEMIC TWOP RPAR RCOL RKEY
 %left EQ PLUX MINUS MULTI DIV AND DIF LESS LEQ LPAR LCOL LKEY
+%nonassoc IF HD ISE TL PRINT NOT 
 
 %eop EOF
 
@@ -71,4 +73,3 @@ AtomExpr : Const (Const)
     | FN ARGS => Expr END 
 
 AppExpr : AtomExpr(AtomExpr) AtomExpr(AtomExpr) | AppExpr(AppExpr) AtomExpr(AtomExpr)
-
