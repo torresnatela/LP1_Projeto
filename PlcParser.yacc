@@ -119,7 +119,7 @@ TypedVar : Type NAME ((Type, NAME))
 Type : AtomicType (AtomicType)
     | LPAR Types RPAR (ListT Types) (*list Type*)
     | LCOL Type RCOL (SeqT Type) (*sequence Type*)
-    | Type DARR Type (FunT(Type1, Type2)) (*function Type*)
+    | Type ARR Type (FunT(Type1, Type2)) (*function Type*)
 
 AtomicType : NIL (ListT [])
     | BOOL (BoolT)
