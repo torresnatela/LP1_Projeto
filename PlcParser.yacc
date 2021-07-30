@@ -37,7 +37,19 @@
     | AtomicType of plcType
     | Types of plcType list
 
-%right SEMIC TWOP RPAR RCOL RKEY
+%right SEMIC ARR
+%nonassoc IF
+%left ELSE
+%left AND
+%left EQ DIF
+%left LESS LEQ
+%right FWOP
+%left MINUS PLUS
+%left DIV MULT
+%nonassoc NOT HD TL ISE PRINT NAME
+%left LCOL
+
+
 %left EQ PLUS MINUS MULT DIV AND DIF LESS LEQ LPAR LCOL LKEY
 %nonassoc IF HD ISE TL PRINT NOT 
 
