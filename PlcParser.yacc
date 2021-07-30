@@ -16,7 +16,7 @@
     | LESS | LEQ
     | AND | NOT | DIF
     | SEMIC | VIRG
-    | ARR | BAR | UNDER | DARR
+    | ARR | PIPE | UNDER | DARR
     | NAME of string | INT | BOOL 
     | NAT of int
     | EOF
@@ -99,7 +99,7 @@ Comps : Expr VIRG Expr (Expr1::Expr2::[])
 | Expr VIRG Comps (Expr::Comps)
 
 MatchExpr : END ([]) (*Lista Vazia*)
-    | BAR CondExpr ARR Expr MatchExpr ([(CondExpr, Expr)] @ MatchExpr)
+    | PIPE CondExpr ARR Expr MatchExpr ([(CondExpr, Expr)] @ MatchExpr)
 
 CondExpr : Expr (SOME(Expr))
 | UNDER (NONE)

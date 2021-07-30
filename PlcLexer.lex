@@ -88,7 +88,7 @@ identifier=[a-zA-Z_][a-zA-Z_0-9]*;
 "," => (VIRG(yypos, yypos));
 ":" => (TWOP(yypos, yypos)); 
 "->" => (ARR(yypos,yypos));
-"|" => (BAR(yypos,yypos));
+"|" => (PIPE(yypos,yypos));
 "_" => (UNDER(yypos,yypos));
 "=>" => (DARR(yypos,yypos));
 
