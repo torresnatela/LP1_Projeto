@@ -4,7 +4,7 @@
 
 %pos int
 
-%term VAR |
+%term VAR
     | IF | ELSE
     | END | FALSE | TRUE
     | FN | FUN | HD
@@ -20,25 +20,25 @@
     | NAME of string | INT | BOOL 
     | NAT of int
     | EOF
-    
 
-%noterm Prog of expr Decl 
-        | Decl 
-        | Expr of AtomExpr AppExpr MatchExpr 
-        | AtomExpr of Const 
-        | AppExpr of AtomExpr AppExpr
-        | Const of expr
-        | MatchExpr of (expr option * expr) list
-        | CondExpr of expr option
-        | Args of (plcType * string) list
-        | Params of (plcType * string) list
-        | TypedVar of plcType * string
-        | Type of plcType
-        | AtomicType of plcType
-        | Types of plcType list
+%nonterm Prog of expr
+    | Decl of expr
+    | Expr of expr
+    | AtomExpr of expr
+    | AppExpr of expr
+    | Const of expr
+    | Comps of expr list
+    | MatchExpr of (expr option * expr) list
+    | CondExpr of expr option
+    | Args of (plcType * string) list
+    | Params of (plcType * string) list
+    | TypedVar of plcType * string
+    | Type of plcType
+    | AtomicType of plcType
+    | Types of plcType list
 
 %right SEMIC TWOP RPAR RCOL RKEY
-%left EQ PLUS MINUS MULTI DIV AND DIF LESS LEQ LPAR LCOL LKEY
+%left EQ PLUS MINUS MULT DIV AND DIF LESS LEQ LPAR LCOL LKEY
 %nonassoc IF HD ISE TL PRINT NOT 
 
 %eop EOF
@@ -49,12 +49,12 @@
 
 %%
 
-Prog : Expr (Expr) | 
+Prog : Expr (Expr)  
     | Decl (Decl)
 
 Decl : VAR NAME EQ Expr SEMIC Prog (Let(NAME, Expr, Prog))
     | FUN NAME Args EQ Expr SEMIC Prog (Let(Name, makeAnon(Args, Expr), Prog))
-    | FUN REC NAME Args WOP Type EQ Expr SEMIC Prog (makeFun(Name, Args, Type, Expr, Prog)) 
+    | FUN REC NAME Args TWOP Type EQ Expr SEMIC Prog (makeFun(Name, Args, Type, Expr, Prog)) 
 
 Expr : AtomExpr (AtomExpr) 
     | AppExpr(AppExpr)
@@ -65,7 +65,7 @@ Expr : AtomExpr (AtomExpr)
     | HD Expr (Prim1("hd", Expr))
     | TL Expr (Prim1("tl", Expr))
     | ISE Expr (Prim1("ise", Expr))
-    | PRINT Expr (Prim1("print"", Expr))
+    | PRINT Expr (Prim1("print", Expr))
     | Expr AND Expr (Prim2("&&", Expr1, Expr2))
     | Expr PLUS Expr (Prim2("+", Expr1, Expr2))
     | Expr MINUS Expr (Prim2("-", Expr1, Expr2))
@@ -105,7 +105,7 @@ CondExpr : Expr (SOME(Expr))
 | UNDER (NONE)
 
 Args : LPAR RPAR ([]) 
-    | LPAR Params DPAR (Params)
+    | LPAR Params RPAR (Params)
 
 Params : TypedVar ([TypedVar])
     | TypedVar VIRG Params ([TypedVar]@Params)
