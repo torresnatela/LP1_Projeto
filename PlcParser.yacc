@@ -15,16 +15,32 @@
     | TWOP | WOP
     | LESS | LEQ
     | AND | NOT | DIF
-    | SEMIC | DOT
+    | SEMIC | VIRG
     | ARR | BAR | UNDER | DAR
     | NAME of string | INT | BOOL 
     | EOF
 
-%noterm Prog of expr Decl | Decl | Expr of AtomExpr AppExpr MatchExpr | AtomExpr of Const | AppExpr of AtomExpr AppExpr 
+%noterm Prog of expr Decl 
+        | Decl 
+        | Expr of AtomExpr AppExpr MatchExpr 
+        | AtomExpr of Const 
+        | AppExpr of AtomExpr AppExpr
+        | Const of expr
+        | MatchExpr of (expr option * expr) list
+        | CondExpr of expr option
+        | Args of (plcType * string) list
+        | Params of (plcType * string) list
+        | TypedVar of plcType * string
+        | Type of plcType
+        | AtomicType of plcType
+        | Types of plcType list
+        | Nat of int
+        | Name of string
+
 
 
 %right SEMIC TWOP RPAR RCOL RKEY
-%left EQ PLUX MINUS MULTI DIV AND DIF LESS LEQ LPAR LCOL LKEY
+%left EQ PLUS MINUS MULTI DIV AND DIF LESS LEQ LPAR LCOL LKEY
 %nonassoc IF HD ISE TL PRINT NOT 
 
 %eop EOF
@@ -41,7 +57,7 @@ Prog : Expr (Expr) | Decl (Decl)
 Decl : 
     | VAR NAME EQ Expr SEMIC Prog (Let(NAME, Expr, Prog))
     | FUN NAME ARGS EQ Expr SEMIC Prog (Let(NAME, Expr, Prog))
-    | FUN REC NAME ARGS WOP TYPE EQ Expr SEMIC Prog (Let(NAME, Expr, Prog))
+    | FUN REC NAME ARGS WOP Type EQ Expr SEMIC Prog (Let(NAME, Expr, Prog))
 
 Expr : AtomExpr (AtomExpr) | AppExpr(AppExpr) | MatchExpr (MatchExpr)
     | IF Expr THEN Expr ELSE Expr
@@ -73,3 +89,39 @@ AtomExpr : Const (Const)
     | FN ARGS => Expr END 
 
 AppExpr : AtomExpr(AtomExpr) AtomExpr(AtomExpr) | AppExpr(AppExpr) AtomExpr(AtomExpr)
+
+Const : TRUE (ConB(TRUE))
+| FALSE (ConB(FALSE))
+| Nat (ConI(Nat))
+| LPAR RPAR (List([]))
+| LPAR Type LKEY RKEY RCOL (ESeq(Type))
+
+Comps : Expr VIRG Expr (Expr1::Expr2::[])
+| Expr VIRG Comps (Expr::Comps)
+
+MatchExpr : END ([]) (*Lista Vazia*)
+    | BAR CondExpr ARR Expr MatchExpr ([(CondExpr, Expr)] @ MatchExpr)
+
+CondExpr : Expr (SOME(Expr))
+| UNDER (NONE)
+
+Args : LPAR RPAR ([]) 
+    | LPAR Params DPAR (Params)
+
+Params : TypedVar ([TypedVar])
+    | TypedVar VIRG Params ([TypedVar]@Params)
+
+TypedVar : Type NAME ((Type, NAME))
+
+Type : AtomicType (AtomicType)
+    | LPAR Types RPAR (ListT Types) (*list Type*)
+    | LCOL Type RCOL (SeqT Type) (*sequence Type*)
+    | Type TPRODUZ Type (FunT(Type1, Type2)) (*function Type*)
+
+AtomicType : NIL (ListT [])
+    | BOOL (BoolT)
+    | INT (IntT)
+    | LPAR Type RPAR (Type)
+
+Types: Type VIRGULA Type ([Type1, Type2]) 
+    | Type VIRGULA Types ([Type1] @ Types) 

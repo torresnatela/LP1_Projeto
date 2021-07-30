@@ -84,7 +84,7 @@ identifier=[a-zA-Z_][a-zA-Z_0-9]*;
 "!=" => (DIF(yypos, yypos));
 "{" => (LKEY(yypos, yypos));
 "}" => (RKEY(yypos, yypos));
-"," => (DOT(yypos, yypos));
+"," => (VIRG(yypos, yypos));
 ":" => (WOP(yypos, yypos)); 
 "->" => (ARR(yypos,yypos));
 "|" => (BAR(yypos,yypos));
