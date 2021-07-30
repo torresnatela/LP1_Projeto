@@ -28,9 +28,9 @@ fun keyword (s, lpos, rpos) =
         "then" => THEN(lpos, rpos)
         "tl" => TL(lpos, rpos)
         "true" => TRUE(lpos, rpos)
-        "with" => WITH(lpos,rpos) 
+        "with" => WITH(lpos,rpos)
+        "_" => UNDER(lpos,rpos)
         | _   => NAME (s, lpos, rpos)
-
 
 val error = fn x => TextIO.output(TextIO.stdOut, x ^ "\n")
 val lineNumber = ref 0
