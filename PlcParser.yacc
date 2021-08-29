@@ -34,7 +34,7 @@
     | Params of (plcType * string) list
     | TypedVar of plcType * string
     | Type of plcType
-    | AtomicType of plcType
+    | AtomType of plcType
     | Types of plcType list
 
 
@@ -45,7 +45,7 @@
 %left EQ DIF
 %left LESS LEQ
 %right FWOP
-%left MINUS PLUS
+%left PLUS MINUS
 %left DIV MULT
 %nonassoc NOT HD TL ISE PRINT NAME
 %left LCOL
@@ -107,29 +107,29 @@ Const : TRUE (ConB(true))
 Comps : Expr VIRG Expr (Expr1::Expr2::[])
 | Expr VIRG Comps (Expr::Comps)
 
-MatchExpr : END ([]) (*Lista Vazia*)
+MatchExpr : END ([]) 
     | PIPE CondExpr ARR Expr MatchExpr ([(CondExpr, Expr)] @ MatchExpr)
 
-CondExpr : Expr (SOME(Expr))
+CondExpr : Expr (SOME Expr)
 | UNDER (NONE)
 
 Args : LPAR RPAR ([]) 
     | LPAR Params RPAR (Params)
 
-Params : TypedVar ([TypedVar])
-    | TypedVar VIRG Params ([TypedVar]@Params)
+Params : TypedVar (TypedVar :: [])
+    | TypedVar VIRG Params (TypedVar :: Params)
 
 TypedVar : Type NAME ((Type, NAME))
 
-Type : AtomicType (AtomicType)
-    | LPAR Types RPAR (ListT Types) (*list Type*)
-    | LCOL Type RCOL (SeqT Type) (*sequence Type*)
-    | Type ARR Type (FunT(Type1, Type2)) (*function Type*)
+Type : AtomType (AtomType)
+    | LPAR Types RPAR (ListT Types) 
+    | LCOL Type RCOL (SeqT Type)
+    | Type ARR Type (FunT (Type1, Type2)) 
 
-AtomicType : NIL (ListT [])
+AtomType : NIL (ListT [])
     | BOOL (BoolT)
     | INT (IntT)
     | LPAR Type RPAR (Type)
 
-Types: Type VIRG Type ([Type1, Type2]) 
-    | Type VIRG Types ([Type1] @ Types) 
+Types: Type VIRG Type (Type1 :: Type2 :: []) 
+    | Type VIRG Types (Type :: Types) 

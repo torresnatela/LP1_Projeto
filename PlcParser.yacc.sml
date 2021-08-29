@@ -435,7 +435,7 @@ structure MlyValue =
 struct
 datatype svalue = VOID | ntVOID of unit ->  unit
  | NAT of unit ->  (int) | NAME of unit ->  (string)
- | Types of unit ->  (plcType list) | AtomicType of unit ->  (plcType)
+ | Types of unit ->  (plcType list) | AtomType of unit ->  (plcType)
  | Type of unit ->  (plcType) | TypedVar of unit ->  (plcType*string)
  | Params of unit ->  ( ( plcType * string )  list)
  | Args of unit ->  ( ( plcType * string )  list)
@@ -877,7 +877,7 @@ end
 |  ( 44, ( ( _, ( MlyValue.Expr Expr1, Expr1left, Expr1right)) :: 
 rest671)) => let val  result = MlyValue.CondExpr (fn _ => let val  (
 Expr as Expr1) = Expr1 ()
- in (SOME(Expr))
+ in (SOME Expr)
 end)
  in ( LrTable.NT 8, ( result, Expr1left, Expr1right), rest671)
 end
@@ -899,7 +899,7 @@ end
 |  ( 48, ( ( _, ( MlyValue.TypedVar TypedVar1, TypedVar1left, 
 TypedVar1right)) :: rest671)) => let val  result = MlyValue.Params (fn
  _ => let val  (TypedVar as TypedVar1) = TypedVar1 ()
- in ([TypedVar])
+ in (TypedVar :: [])
 end)
  in ( LrTable.NT 10, ( result, TypedVar1left, TypedVar1right), rest671
 )
@@ -909,7 +909,7 @@ end
  let val  result = MlyValue.Params (fn _ => let val  (TypedVar as 
 TypedVar1) = TypedVar1 ()
  val  (Params as Params1) = Params1 ()
- in ([TypedVar]@Params)
+ in (TypedVar :: Params)
 end)
  in ( LrTable.NT 10, ( result, TypedVar1left, Params1right), rest671)
 
@@ -922,13 +922,13 @@ MlyValue.TypedVar (fn _ => let val  (Type as Type1) = Type1 ()
 end)
  in ( LrTable.NT 11, ( result, Type1left, NAME1right), rest671)
 end
-|  ( 51, ( ( _, ( MlyValue.AtomicType AtomicType1, AtomicType1left, 
-AtomicType1right)) :: rest671)) => let val  result = MlyValue.Type (fn
- _ => let val  (AtomicType as AtomicType1) = AtomicType1 ()
- in (AtomicType)
+|  ( 51, ( ( _, ( MlyValue.AtomType AtomType1, AtomType1left, 
+AtomType1right)) :: rest671)) => let val  result = MlyValue.Type (fn _
+ => let val  (AtomType as AtomType1) = AtomType1 ()
+ in (AtomType)
 end)
- in ( LrTable.NT 12, ( result, AtomicType1left, AtomicType1right), 
-rest671)
+ in ( LrTable.NT 12, ( result, AtomType1left, AtomType1right), rest671
+)
 end
 |  ( 52, ( ( _, ( _, _, RPAR1right)) :: ( _, ( MlyValue.Types Types1,
  _, _)) :: ( _, ( _, LPAR1left, _)) :: rest671)) => let val  result = 
@@ -948,25 +948,25 @@ end
 MlyValue.Type Type1, Type1left, _)) :: rest671)) => let val  result = 
 MlyValue.Type (fn _ => let val  Type1 = Type1 ()
  val  Type2 = Type2 ()
- in (FunT(Type1, Type2))
+ in (FunT (Type1, Type2))
 end)
  in ( LrTable.NT 12, ( result, Type1left, Type2right), rest671)
 end
 |  ( 55, ( ( _, ( _, NIL1left, NIL1right)) :: rest671)) => let val  
-result = MlyValue.AtomicType (fn _ => (ListT []))
+result = MlyValue.AtomType (fn _ => (ListT []))
  in ( LrTable.NT 13, ( result, NIL1left, NIL1right), rest671)
 end
 |  ( 56, ( ( _, ( _, BOOL1left, BOOL1right)) :: rest671)) => let val  
-result = MlyValue.AtomicType (fn _ => (BoolT))
+result = MlyValue.AtomType (fn _ => (BoolT))
  in ( LrTable.NT 13, ( result, BOOL1left, BOOL1right), rest671)
 end
 |  ( 57, ( ( _, ( _, INT1left, INT1right)) :: rest671)) => let val  
-result = MlyValue.AtomicType (fn _ => (IntT))
+result = MlyValue.AtomType (fn _ => (IntT))
  in ( LrTable.NT 13, ( result, INT1left, INT1right), rest671)
 end
 |  ( 58, ( ( _, ( _, _, RPAR1right)) :: ( _, ( MlyValue.Type Type1, _,
  _)) :: ( _, ( _, LPAR1left, _)) :: rest671)) => let val  result = 
-MlyValue.AtomicType (fn _ => let val  (Type as Type1) = Type1 ()
+MlyValue.AtomType (fn _ => let val  (Type as Type1) = Type1 ()
  in (Type)
 end)
  in ( LrTable.NT 13, ( result, LPAR1left, RPAR1right), rest671)
@@ -975,15 +975,15 @@ end
 MlyValue.Type Type1, Type1left, _)) :: rest671)) => let val  result = 
 MlyValue.Types (fn _ => let val  Type1 = Type1 ()
  val  Type2 = Type2 ()
- in ([Type1, Type2])
+ in (Type1 :: Type2 :: [])
 end)
  in ( LrTable.NT 14, ( result, Type1left, Type2right), rest671)
 end
 |  ( 60, ( ( _, ( MlyValue.Types Types1, _, Types1right)) :: _ :: ( _,
  ( MlyValue.Type Type1, Type1left, _)) :: rest671)) => let val  result
- = MlyValue.Types (fn _ => let val  Type1 = Type1 ()
+ = MlyValue.Types (fn _ => let val  (Type as Type1) = Type1 ()
  val  (Types as Types1) = Types1 ()
- in ([Type1] @ Types)
+ in (Type :: Types)
 end)
  in ( LrTable.NT 14, ( result, Type1left, Types1right), rest671)
 end
